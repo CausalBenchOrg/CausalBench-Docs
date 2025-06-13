@@ -5,6 +5,7 @@ nav:
   - Quickstart: quickstart.md
   - Learn the Basics: basics.md
   - Terms: terms.md
+  - Papers: papers.md
 
 theme:
   name: mkdocs
