@@ -1,6 +1,6 @@
 # Papers
 
-CausalBench is also an academic work, and every now and then, we push the boundaries of Collaborative Benchmarking with Causality, and lower the bar of entry into the domain by. Throughout this endeavor, we write, publish, and present works. Here, we present an active list of our work:
+CausalBench is also an academic work, and every now and then, we push the boundaries of Collaborative Benchmarking with Causality, and lower the bar of entry into the domain. Through this endeavor, we write, publish, and present works. Below is an active list of our work:
 
 ## Conference Appearances
 
