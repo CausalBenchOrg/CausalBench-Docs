@@ -4,6 +4,9 @@ This documentation serves as a guideline to CausalBench.
 
 As we are currently in beta, this documentation will be updated as the development progresses.
 
+## Contribution
+CausalBench is an open source project, and accepts contributions [here!](https://github.com/EmitLab/CausalBench)
+
 ## [Installation](./install/)
 - Details how to install causalbench, and prerequisites.
 
