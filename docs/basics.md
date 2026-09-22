@@ -1,128 +1,81 @@
-# CausalBench 101
+# Glossary
 
-## Dataset
-- **Description**: Data and configuration files that describe the data in the data files.
-
-### How to define a dataset
-A dataset is defined with a yaml configuration, and the data files.
-Any dataset configuration must inlcude a type, name, task(?), files defined. Files need to be configured with `type`, `data` type, file path in `path`, and any columns with their details.  
-Optional fields are: `headers`, `version_num`, that defines the versions, `url`, `source` and `description` that define the dataset.
-
-```yaml
-type: dataset
-name: abalone
-source: UCI
-url: https://archive.ics.uci.edu/dataset/1/abalone
-description: Predict the age of abalone from physical measurements
-files:
-    file1:
-        type: csv
-        data: dataframe
-        path: abalone.mixed.numeric.csv
-        headers: true
-        columns:
-            sex:
-                header: Sex
-                type: nominal
-                data: integer
-                labels:
-                    - 0
-                    - 1
-                    - 2
-            ...
-    file2:
-        type: csv
-        data: graph
-        path: causal_info_adjmat.csv
-        headers: true
-        columns:
-            sex:
-                header: Sex
-                type: nominal
-                data: integer
-            ...
-```
-
-## Model
-- **Description**: Algorithms written in Python that take in a dataset and execute a particular model.
-- **Function**: Produce outputs based on the tasks and models.
-
-### How to define a model
-A model is defined with a yaml configuration, alongside a python script that the model is executed on. A model must have a type, name, task and its path defined.
-
-Optional fields are: `version_num`, that defines the versions, `url`, `source` and `description` that define the model.
-
-```yaml
-type: model
-name: VAR-LiNGAM
-source: GitHub
-url: https://github.com/huawei-noah/trustworthyAI/tree/master/gcastle
-description: Discovery of non-gaussian linear causal models
-task: discovery.temporal
-path: varlingam.py
-version_num: 1
-```
-
-## Metric
-- **Description**: Python implementations of metric calculations.
-- **Function**: Take in the outputs provided by the model and output a numerical value, based on its configuration.
-
-### How to define a metric
-```yaml
-type: metric
-name: accuracy_static
-source: NA
-url: NA
-description: Accuracy metric for static causal graph.
-task: discovery.static
-path: accuracy_static.py
-```
-
-## Context
-- **Description**: A configuration that encapsulates a selected set of multiple datasets, models, metrics and hyperparameters.
-- **Function**: Defined by users, contexts represent experiments carried out on a selection of components. Contexts are defined on user level, and all of the dataset-model tuple combinations are created and executed on the system level.
-
-### How to define a context
-A context is created with a yaml notation. Any context should have a type, name, task(?), and at least one dataset, model and metric defined.
-
-```yaml
-name: Context Abhinav 1
-task: discovery.static
-description: July experiment set
-datasets:
-- id: 14
-  version: 1
-- id: 15
-  version: 1
-models:
-- id: 22
-  version: 1
-- id: 17
-  version: 1
-metrics:
-- id: 12
-  version: 1
-- id: 12
-  version: 2
-```
-
-## Task
-- **Description**: Logical definition of Causal/Machine Learning tasks.
-- **Function**: Handles configurations between dataset/model/metric components through python functions.
-
-### How to define a task
-A task takes in two files: a `.yaml` file that defines the type, name, path and the class name of a task, and a `.py` file that defines the task and its execution.
-
-The yaml file should only include the `type`, `name`, `path`, and the `class` fields.
-```yaml
-type: task
-name: discovery.static
-path: discovery.static.py
-class_name: DiscoveryStatic
-```
-
-The python file should include any input and output functions for any dataset -> model, model -> metric, dataset -> metric relations, and the helper functions to facilitate the task. discovery.static.py and discovery.temporal.py files under the `/task` folder provides examples on construction of these functions.
+This glossary uses the terminology in the CausalBench framework paper and the checked `causalbench-asu` 0.2 releases.
 
 ## Benchmark
-- **Description**: Benchmark defines run results of a number of executed contexts. 
-On top of the executed context structure, benchmark includes run-configuration specific information like the system configuration, GPU-CPU resource profiling. 
+
+A general term for the evaluation process. In precise instructions, prefer **context** for the experiment recipe, **scenario** for one dataset–model execution, and **run** for recorded execution results.
+
+## Component
+
+A versioned CausalBench building block: a task, dataset, model, metric, or context. Dataset, model, metric, and task packages contain a `config.yaml` manifest plus any referenced payload files.
+
+## Context
+
+A reusable benchmark recipe that selects one task, datasets and their file mappings, models and their resolved hyperparameters, and metrics and their resolved hyperparameters. A context contains no measured results until it is executed.
+
+## Dataset
+
+One or more data files plus metadata that tells CausalBench how to load them. A dataset can expose tabular data, a static graph, a temporal graph, or multiple named files. Context mappings connect these file aliases to task inputs.
+
+## DOI
+
+A Digital Object Identifier for a durable research record. The CausalBench paper states that public benchmark runs are registered with Zenodo and assigned DOIs. Verify that the hosted service actually assigned and resolved a DOI before citing it.
+
+## Ground truth
+
+Reference information used by a metric to evaluate a model output. For causal discovery this is often a known causal graph. Ground truth can be incomplete, uncertain, or unavailable for real-world data, so its provenance and limitations are part of the experiment.
+
+## Hyperparameter
+
+A named setting declared by a model or metric. Its component manifest records metadata and a default under `value`; a context records the value selected for a particular experiment.
+
+## Instrumented context
+
+The paper's term for a context coupled to the hardware and software system on which its scenarios execute. The system is part of the experimental conditions, especially for timing and resource comparisons.
+
+## Mapping
+
+A dictionary that connects task input names to dataset file aliases. For example, `{"data": "file1", "ground_truth": "file2"}` sends two files from a dataset to the inputs declared by a task.
+
+## Metric
+
+A Python evaluator that consumes model output and, when required by the task, dataset-derived values such as ground truth. A metric package declares its compatible task ID/version and optional hyperparameters. The upstream metric fixtures conventionally return `{"score": value}`.
+
+## Model
+
+A Python implementation whose top-level `execute(...)` function consumes task-defined inputs and produces task-defined outputs. A model package declares the exact task ID and version it implements and any configurable hyperparameters.
+
+## Module ID
+
+The registry identifier exposed as `module_id` in the Python API. Pair a component ID with its version when identifying a task, dataset, model, metric, or context.
+
+## Registry
+
+The hosted CausalBench service used to discover, download, and publish components, contexts, and runs. Registry operations require authentication and network access; model and metric execution happens locally.
+
+## Result
+
+The record produced by one scenario inside a run, including its dataset and model identity, model execution details, and metric evaluations. The paper also uses **Result ID** for a registered fine-grained dataset–model–metric outcome.
+
+## Run
+
+The record returned by `Context.execute()`. It groups all scenario results with context/task identity, overall timing, and system profiling. A local run has no registry Run ID until it is published.
+
+## Scenario
+
+One dataset–model combination expanded from a context, evaluated with all metrics selected by that context. In the checked 0.2 releases, the scenario count is the number of dataset entries multiplied by the number of model entries.
+
+## Task
+
+The contract connecting datasets, models, and metrics. A task declares named, typed dataset inputs for models and metrics, named model outputs for metrics, and shared helper functions. Compatibility is tied to the task's registry ID and version, not only its name.
+
+## Version
+
+A registry component revision. This is distinct from the installed `causalbench-asu` package version. Component manifests also include a `causalbench` compatibility block; the checked 0.2 releases compare its major and minor values while loading.
+
+## Visibility
+
+Whether a published record is private or public. `publish()` defaults to private; `publish(public=True)` asks for interactive confirmation. Public publication can carry disclosure, permanence, and DOI implications.
+
+For the relationships among these terms, see [Core concepts](concepts.md). To author a component, start with the [dataset](components/datasets.md), [model and metric](components/models-metrics.md), or [task](components/tasks.md) guide.
