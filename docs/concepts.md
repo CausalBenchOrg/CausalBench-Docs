@@ -6,12 +6,12 @@ It is not itself a causal discovery algorithm, and a successful run does not est
 
 > **Version note:** This documentation was verified against the published `causalbench-asu` 0.2.4 package and [upstream snapshot `ceb45da`](https://github.com/CausalBenchOrg/CausalBench/commit/ceb45da42db79bdc06c86de116c507e2f37fa033), which declares the unpublished 0.2.5 version. Check your installed version when exact behavior matters.
 
-## The Mental Model
+## The CausalBench Experiment Structure
 
 A useful way to think about CausalBench is as a progression from reusable building blocks to recorded evidence:
 
 ```text
-Task contract
+Task
     + datasets and file mappings
     + models and model settings
     + metrics and metric settings
@@ -172,5 +172,5 @@ The paper also discusses a broader direction covering causal inference, causal i
 
 - [Install and configure CausalBench](install.md).
 - [Execute a context in the quickstart](quickstart.md).
-- Review the [dataset](components/datasets.md), [model and metric](components/models-metrics.md), and [task](components/tasks.md) authoring guides.
+- Review the [dataset](modules/datasets.md), [model and metric](modules/models-metrics.md), and [task](modules/tasks.md) authoring guides.
 - Use the [reproducibility guide](reproducibility.md) before sharing results.

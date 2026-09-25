@@ -3,7 +3,7 @@
 CausalBench is an open benchmarking platform for evaluating causal-learning models with reusable datasets, metrics, and experiment definitions. It runs experiments on your own machine, records the software and hardware context, and lets collaborators reproduce a benchmark from versioned components.
 
 !!! info "Beta software"
-    CausalBench is under active development. These pages were checked against the published `causalbench-asu` 0.2.4 package and [upstream snapshot `ceb45da`](https://github.com/CausalBenchOrg/CausalBench/commit/ceb45da42db79bdc06c86de116c507e2f37fa033) from September 17, 2026, which declares the unpublished 0.2.5 version. Registry contents and permissions are live service data, so component IDs shown in papers or tutorials may not be available to every account.
+    CausalBench is under active development. These pages were checked against the published `causalbench-asu` 0.2.5 package. Registry contents and permissions are live service data, so component IDs shown in papers or tutorials may not be available to every account.
 
 ## What CausalBench provides
 
@@ -11,18 +11,20 @@ CausalBench has two cooperating parts:
 
 | Part | What it does |
 | --- | --- |
-| [Web platform](https://causalbench.org) | Browse registered datasets, models, metrics, contexts, and benchmark results. |
+| [Web platform](https://causalbench.org) | Browse and design registered datasets, models, metrics, contexts, tasks, and benchmark results. In addition, Causal explanation and recommendation features are provided on the web platform. |
 | [Python package](https://github.com/CausalBenchOrg/CausalBench) | Download components, execute scenarios locally, collect results and system metadata, and publish records. |
 
-The platform is organized around a small set of versioned objects:
+The platform is organized around a small set of versioned modules:
 
-1. A **task** defines the input and output contract.
-2. **Datasets**, **models**, and **metrics** implement that contract.
-3. A **context** selects compatible components and their settings.
-4. CausalBench expands the context into dataset–model **scenarios** and executes them locally.
-5. A **run** records metric outputs, timing, and execution-environment information.
+1. A **task** defines a task, alongside its expected input and outputs.
+2. **Datasets**, **models**, and **metrics** implement related components of experiments. Datasets are task-agnostic, while models and metrics are bound to tasks.
+3. A benchmark **context** includes a setup consisting of a number of datasets, models and metrics within a selected task, alongside their parameters and hyperparameters.
+4. CausalBench expands the context into benchmark **scenarios** and executes them locally.
+5. A **run** records the benchmark content, including accuracy, timing and system metric outputs, and execution and environment information.
+6. Causal Explanation module provides causality grounded explanations on a selected set of experiment results.
+7. Causal Recommendation uses the insights provided by the Causal Explanation module, and recommmends a set of experiments towards benchmark exploration and optimization.
 
-[Learn the mental model](concepts.md) or see the [glossary](basics.md) for precise definitions.
+[Learn the CausalBench Experiment Structure](concepts.md) or see the [glossary](basics.md) for precise definitions.
 
 ## Start here
 
@@ -32,10 +34,10 @@ If you want to run an existing benchmark:
 2. [Run a published context](quickstart.md).
 3. [Inspect, compare, and optionally publish the run](contexts.md#inspect-a-run).
 
-If you want to contribute an experiment:
+If you want to contribute a module or an experiment:
 
 1. Read [contexts and runs](contexts.md) to understand component compatibility.
-2. Package a [dataset](components/datasets.md), [model or metric](components/models-metrics.md), or [task](components/tasks.md).
+2. Package a [dataset](modules/datasets.md), [model or metric](modules/models-metrics.md), or [task](modules/tasks.md).
 3. Follow the [pre-publication checklist](reproducibility.md#before-publication).
 
 ## Minimal example

@@ -1,10 +1,10 @@
 # Python API reference
 
-This page documents the public classes used in normal CausalBench workflows. It was checked against the published `causalbench-asu` 0.2.4 package and [upstream snapshot `ceb45da`](https://github.com/CausalBenchOrg/CausalBench/commit/ceb45da42db79bdc06c86de116c507e2f37fa033), which declares the unpublished 0.2.5 version; the package is beta software and does not yet publish a formal stability guarantee.
+This page documents the public classes used in normal CausalBench workflows. Last updated for: `causalbench-asu` 0.2.5 
 
 ## Imports
 
-All component classes are re-exported from `causalbench.modules`:
+All module classes are re-exported from `causalbench.modules`:
 
 ```python
 from causalbench.modules import Context, Dataset, Metric, Model, Run, Task
@@ -12,12 +12,12 @@ from causalbench.modules import Context, Dataset, Metric, Model, Run, Task
 
 The installed distribution is named `causalbench-asu`, but the import package is named `causalbench`.
 
-## Shared component lifecycle
+## Shared module lifecycle
 
 `Task`, `Dataset`, `Model`, `Metric`, and `Context` share the same constructor pattern:
 
 ```text
-Component(module_id: int | None = None,
+Module(module_id: int | None = None,
           version: int | None = None,
           zip_file: str | None = None)
 ```
@@ -25,12 +25,14 @@ Component(module_id: int | None = None,
 Use exactly one loading mode:
 
 ```python
-# Fetch a registered component.
+# Fetch a registered module.
 dataset = Dataset(module_id=DATASET_ID, version=DATASET_VERSION)
 
 # Load and validate a local package.
 dataset = Dataset(zip_file="path/to/dataset.zip")
 ```
+
+Existing module ID's and Versions can be checked at the [CausalBench website](https://causalbench.org). 
 
 Remote loading authenticates, downloads the requested archive, extracts it below `~/.causalbench/`, reads `config.yaml`, validates its JSON schema, and checks `major.minor` package compatibility. Local loading extracts to a temporary directory and performs the same manifest validation without a registry request.
 
@@ -39,13 +41,14 @@ Task, model, and metric Python files are dynamically imported in the current pro
 ### `publish`
 
 ```text
-component.publish(public: bool = False) -> bool
+module.publish(public: bool = False) -> bool
 ```
 
 - The default is a private upload.
 - `public=True` triggers an interactive confirmation; declining falls back to a private upload rather than cancelling in the checked releases.
 - Republishing an object that already has both an ID and a version triggers an overwrite confirmation.
 - On success, the object receives the returned `module_id` and `version`, and the method returns `True`.
+- A Zenodo record is automatically created for the publicly shared modules.
 
 Publishing changes remote state. Public records can have stronger permanence expectations than private records; read [Reproducible experiments](reproducibility.md) first.
 
@@ -62,7 +65,7 @@ A task supplies the typed wiring contract between datasets, models, and metrics.
 | `load()` | `AbstractTask` implementation | Import the manifest's Python file and instantiate `class_name`. |
 | `publish(public=False)` | `bool` | Upload the task package. |
 
-The loaded implementation provides `helpers()`, `model_data_inputs()`, `metric_data_inputs()`, and `metric_model_inputs()`. See [Tasks and data contracts](components/tasks.md).
+The loaded implementation provides `helpers()`, `model_data_inputs()`, `metric_data_inputs()`, and `metric_model_inputs()`. See [Tasks and data contracts](modules/tasks.md).
 
 ## `Dataset`
 
@@ -91,7 +94,7 @@ files = dataset.load()
 print(files.file1.data.head())
 ```
 
-See [Dataset packages](components/datasets.md) for the manifest schema.
+See [Dataset packages](modules/datasets.md) for the manifest schema.
 
 ## `Model`
 
@@ -144,7 +147,7 @@ context = Context.create(
 )
 ```
 
-Every dataset, model, and metric entry is a tuple. Empty override dictionaries select the component defaults.
+Every dataset, model, and metric entry is a tuple. Empty override dictionaries select the module defaults.
 
 ### Execute
 
@@ -212,6 +215,6 @@ assert name_a == name_b
 
 ## Failure behavior
 
-Schema, compatibility, authentication, and HTTP failures are logged by the checked 0.2 releases; several of these paths then raise `SystemExit`. In a notebook, inspect the messages immediately above the stopped cell. In an application, validate component packages before starting a long batch and decide explicitly whether catching `SystemExit` is appropriate.
+Schema, compatibility, authentication, and HTTP failures are logged by the checked 0.2 releases; several of these paths then raise `SystemExit`. In a notebook, inspect the messages immediately above the stopped cell. In an application, validate module packages before starting a long batch and decide explicitly whether catching `SystemExit` is appropriate.
 
 For common messages and fixes, see [Troubleshooting](troubleshooting.md).

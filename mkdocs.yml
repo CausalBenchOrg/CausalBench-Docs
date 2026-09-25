@@ -19,9 +19,9 @@ nav:
       - Reproducible experiments: reproducibility.md
       - Glossary: basics.md
   - Build components:
-      - Dataset packages: components/datasets.md
-      - Models and metrics: components/models-metrics.md
-      - Tasks and data contracts: components/tasks.md
+      - Dataset packages: modules/datasets.md
+      - Models and metrics: modules/models-metrics.md
+      - Tasks and data contracts: modules/tasks.md
   - Reference:
       - Python API: api.md
       - Troubleshooting: troubleshooting.md

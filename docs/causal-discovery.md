@@ -30,7 +30,7 @@ datasets=[
 ]
 ```
 
-See [Dataset packages](components/datasets.md) for the CSV formats and [Contexts and runs](contexts.md) for complete context construction.
+See [Dataset packages](modules/datasets.md) for the CSV formats and [Contexts and runs](contexts.md) for complete context construction.
 
 ## Represent Graphs Consistently
 

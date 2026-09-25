@@ -185,4 +185,4 @@ Public record:        <verified DOI, if assigned>
 
 This compact record does not replace the full run artifact, but it gives readers enough information to locate it and judge whether a comparison is like-for-like.
 
-Continue with the [quickstart](quickstart.md) to execute a context, or review the [component authoring guides](components/datasets.md) when preparing your own benchmark.
+Continue with the [quickstart](quickstart.md) to execute a context, or review the [component authoring guides](modules/datasets.md) when preparing your own benchmark.

@@ -70,7 +70,7 @@ The package found `config.yaml`, but it does not match the schema for that compo
 - every required metadata and path field is present; and
 - YAML values have the intended types (`true`, not `"true"`, for a boolean).
 
-Compare the manifest with the relevant [dataset](components/datasets.md), [model/metric](components/models-metrics.md), or [task](components/tasks.md) guide.
+Compare the manifest with the relevant [dataset](modules/datasets.md), [model/metric](modules/models-metrics.md), or [task](modules/tasks.md) guide.
 
 ### `Installed CausalBench ... is incompatible with ...`
 

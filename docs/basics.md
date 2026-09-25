@@ -78,4 +78,4 @@ A registry component revision. This is distinct from the installed `causalbench-
 
 Whether a published record is private or public. `publish()` defaults to private; `publish(public=True)` asks for interactive confirmation. Public publication can carry disclosure, permanence, and DOI implications.
 
-For the relationships among these terms, see [Core concepts](concepts.md). To author a component, start with the [dataset](components/datasets.md), [model and metric](components/models-metrics.md), or [task](components/tasks.md) guide.
+For the relationships among these terms, see [Core concepts](concepts.md). To author a component, start with the [dataset](modules/datasets.md), [model and metric](modules/models-metrics.md), or [task](modules/tasks.md) guide.
